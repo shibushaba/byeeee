@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Goodbye Finu 🌚</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(to bottom, #1e1e2f, #15151f);
+      color: #f5f5f5;
+      overflow-x: hidden;
+      padding: 0;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+
+    .hero {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid #fff;
+      animation: typing 3s steps(40, end), blink 0.75s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent }
+    }
+
+    .subtext {
+      font-size: 1.1rem;
+      color: #bbb;
+      margin-bottom: 2rem;
+    }
+
+    .glass-box {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2rem;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 2rem 0;
+      font-size: 1.1rem;
+      max-width: 95%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .quote {
+      font-style: italic;
+      color: #aaa;
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+
+    button {
+      background: #ffffff;
+      color: #111;
+      padding: 0.75rem 1.5rem;
+      margin: 1rem 0.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #ffda6a;
+      color: #000;
+    }
+
+    .highlight {
+      font-weight: bold;
+      color: #ff7a7a;
+      margin: 1.5rem 0;
+      font-size: 1.1rem;
+    }
+
+    #slideshow {
+      margin-top: 2rem;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    #slideshow img {
+      width: 100%;
+      display: none;
+    }
+
+    #slideshow img.active {
+      display: block;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(30,30,30,0.95);
+      padding: 2rem;
+      border-radius: 12px;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(255,255,255,0.05);
+      z-index: 1000;
+      max-width: 90%;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+
+    .stars span {
+      position: absolute;
+      animation: fall 6s linear infinite;
+      font-size: 1.2rem;
+      user-select: none;
+      color: #ffd;
+    }
+
+    @keyframes fall {
+      0% { top: -10px; opacity: 1; }
+      100% { top: 100vh; opacity: 0; }
+    }
+
+    #memePop {
+      display: none;
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      z-index: 1001;
+    }
+
+    #memePop img {
+      width: 120px;
+      border-radius: 8px;
+    }
+
+    /* Fake Snapchat UI */
+    .snap-ui {
+      position: absolute;
+      top: 30px;
+      left: 15px;
+      width: 60%;
+      background: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 1.1rem;
+      display: none;
+    }
+
+    .snap-ui.active {
+      display: block;
+    }
+
+    .snap-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      background: #fffa65;
+      color: #111;
+      padding: 0.5rem 1.2rem;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    
+    .snap-btn:hover {
+      background: #ffda6a;
+    }
+
+    /* "Snap me back" animation */
+    .snap-back {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.2rem;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 0.8rem 2rem;
+      border-radius: 25px;
+      display: none;
+      animation: snapBackMove 1.5s infinite ease-in-out;
+    }
+
+    @keyframes snapBackMove {
+      0% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-10px); }
+      100% { transform: translateX(-50%) translateY(0); }
+    }
+
+    /* Media Queries for Responsiveness */
+    @media (max-width: 768px) {
+      .hero {
+        font-size: 2rem;
+      }
+
+      .subtext, .highlight {
+        font-size: 1rem;
+      }
+
+      .glass-box {
+        font-size: 1rem;
+        padding: 1.5rem;
+      }
+
+      button {
+        font-size: 0.9rem;
+        padding: 0.6rem 1.2rem;
+      }
+
+      .popup {
+        font-size: 1rem;
+        max-width: 80%;
+      }
+
+      #slideshow img {
+        max-height: 400px;
+        object-fit: cover;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        font-size: 1.6rem;
+      }
+
+      .subtext, .highlight {
+        font-size: 0.9rem;
+      }
+
+      .glass-box {
+        font-size: 1rem;
+        padding: 1rem;
+      }
+
+      button {
+        font-size: 0.8rem;
+        padding: 0.5rem 1rem;
+      }
+
+      .popup {
+        font-size: 0.9rem;
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stars" id="stars"></div>
+
+  <div class="container">
+    <div class="hero">Finu... You ghosted me harder than I ghosted my last online class 📚👻</div>
+
+    <div class="subtext">367 days of randomness, memes, and *questionable* Snap streaks... and now, silence 😢</div>
+
+    <div class="highlight">💀 You were last seen ignoring Snapchat 23 hours ago — We need to talk about your disappearing act, buddy.</div>
+
+    <div class="audio-section">
+      <button onclick="document.getElementById('bg-music').play()">🎶 Hit play if you want to hear how dramatic I’m about this</button>
+      <audio id="bg-music" loop>
+        <source src="song.mp3" type="audio/mpeg">
+      </audio>
+    </div>
+
+    <div id="slideshow">
+      <img src="img1.jpg" class="active" alt="Memory 1">
+      <img src="img2.jpg" alt="Memory 2">
+      <img src="img3.jpg" alt="Memory 3">
+    </div>
+
+    <div class="glass-box">
+      Streaks lost. Memories remain. 💔  
+      But, honestly, it was the late-night selfies and random emojis that got me. 🙄  
+      Guess Snapchat will just be *snap* without you now.  
+      Thanks for everything, Finu... I’ll treasure these moments... and the GIFs, obviously.
+    </div>
+
+    <div class="quote">
+      “Not all who wander are lost. But I’m pretty sure you left me on read.”  
+    </div>
+
+    <div>
+      <button onclick="showPopup()">📩 Send my most emotional farewell</button>
+      <button onclick="shootConfetti()">🎆 Make it rain confetti like we’re at the Oscars</button>
+    </div>
+  </div>
+
+  <div class="popup" id="popup">
+    Finu,  
+    I coded this goodbye just for you.  
+    You’ve left me in a world of memes and gifs, and I am *sad* about it.  
+    But hey, friendships don’t just disappear…  
+    unless Snapchat is involved. 📸<br><br>
+    Catch me on the next Snap? Or I'll just send memes forever. 🙃  
+    — Your chaotic friend 💬
+  </div>
+
+  <div id="memePop">
+    <img src="funny-finu.png" alt="Funny Finu">
+  </div>
+
+  <!-- Fake Snap UI -->
+  <div class="snap-ui" id="snapUI">
+    <span>Finu... Snap me back!</span>
+    <div class="snap-btn" onclick="snapMeBack()">👻 Snap me back</div>
+  </div>
+
+  <!-- Snap Back Animation -->
+  <div class="snap-back" id="snapBack">
+    👻 Snap me back! 📨
+  </div>
+
+  <script>
+    function showPopup() {
+      document.getElementById('popup').style.display = 'block';
+    }
+
+    function shootConfetti() {
+      confetti({
+        particleCount: 200,
+        spread: 150,
+        origin: { y: 0.6 }
+      });
+    }
+
+    const slides = document.querySelectorAll('#slideshow img');
+    let index = 0;
+    setInterval(() => {
+      slides[index].classList.remove('active');
+      index = (index + 1) % slides.length;
+      slides[index].classList.add('active');
+    }, 3500);
+
+    const emojis = ['🥺','💛','🔥','👻','📸'];
+    const stars = document.getElementById('stars');
+    for (let i = 0; i < 40; i++) {
+      const span = document.createElement('span');
+      span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      span.style.left = Math.random() * 100 + 'vw';
+      span.style.top = '-10px';
+      span.style.animationDelay = Math.random() * 6 + 's';
+      stars.appendChild(span);
+    }
+  </script>
+
+</body>
+</html>
