@@ -18,8 +18,6 @@
       background: linear-gradient(to bottom, #1e1e2f, #15151f);
       color: #f5f5f5;
       overflow-x: hidden;
-      padding: 0;
-      margin: 0;
     }
 
     .container {
@@ -65,6 +63,7 @@
       max-width: 95%;
       margin-left: auto;
       margin-right: auto;
+      transition: all 0.4s ease;
     }
 
     .quote {
@@ -75,20 +74,23 @@
     }
 
     button {
-      background: #ffffff;
-      color: #111;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      backdrop-filter: blur(8px);
       padding: 0.75rem 1.5rem;
       margin: 1rem 0.5rem;
-      border: none;
-      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
       cursor: pointer;
       font-weight: 600;
-      transition: background 0.3s ease;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
     }
 
     button:hover {
-      background: #ffda6a;
+      background: rgba(255, 255, 255, 0.3);
       color: #000;
+      transform: scale(1.05);
     }
 
     .highlight {
@@ -129,19 +131,43 @@
       max-width: 90%;
       text-align: center;
       font-size: 1.1rem;
+      animation: fadeSlideIn 0.8s ease;
+    }
+
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
     }
 
     .stars span {
       position: absolute;
-      animation: fall 6s linear infinite;
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       user-select: none;
       color: #ffd;
+      animation: floatyFall 6s ease-in-out infinite;
+      opacity: 0;
     }
 
-    @keyframes fall {
-      0% { top: -10px; opacity: 1; }
-      100% { top: 100vh; opacity: 0; }
+    @keyframes floatyFall {
+      0% {
+        top: -10px;
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+      50% {
+        transform: translateX(20px) scale(1.3);
+      }
+      100% {
+        top: 100vh;
+        opacity: 0;
+        transform: translateX(-10px) scale(0.8);
+      }
     }
 
     #memePop {
@@ -157,7 +183,6 @@
       border-radius: 8px;
     }
 
-    /* Fake Snapchat UI */
     .snap-ui {
       position: absolute;
       top: 30px;
@@ -184,12 +209,11 @@
       border-radius: 12px;
       cursor: pointer;
     }
-    
+
     .snap-btn:hover {
       background: #ffda6a;
     }
 
-    /* "Snap me back" animation */
     .snap-back {
       position: fixed;
       bottom: 10px;
@@ -210,60 +234,18 @@
       100% { transform: translateX(-50%) translateY(0); }
     }
 
-    /* Media Queries for Responsiveness */
     @media (max-width: 768px) {
-      .hero {
-        font-size: 2rem;
-      }
-
-      .subtext, .highlight {
-        font-size: 1rem;
-      }
-
-      .glass-box {
-        font-size: 1rem;
-        padding: 1.5rem;
-      }
-
-      button {
-        font-size: 0.9rem;
-        padding: 0.6rem 1.2rem;
-      }
-
-      .popup {
-        font-size: 1rem;
-        max-width: 80%;
-      }
-
-      #slideshow img {
-        max-height: 400px;
-        object-fit: cover;
-      }
+      .hero { font-size: 2rem; }
+      .subtext, .highlight { font-size: 1rem; }
+      .glass-box { font-size: 1rem; padding: 1.5rem; }
+      button { font-size: 0.9rem; padding: 0.6rem 1.2rem; }
     }
 
     @media (max-width: 480px) {
-      .hero {
-        font-size: 1.6rem;
-      }
-
-      .subtext, .highlight {
-        font-size: 0.9rem;
-      }
-
-      .glass-box {
-        font-size: 1rem;
-        padding: 1rem;
-      }
-
-      button {
-        font-size: 0.8rem;
-        padding: 0.5rem 1rem;
-      }
-
-      .popup {
-        font-size: 0.9rem;
-        max-width: 90%;
-      }
+      .hero { font-size: 1.6rem; }
+      .subtext, .highlight { font-size: 0.9rem; }
+      .glass-box { font-size: 1rem; padding: 1rem; }
+      button { font-size: 0.8rem; padding: 0.5rem 1rem; }
     }
   </style>
 </head>
@@ -281,7 +263,7 @@
     <div class="audio-section">
       <button onclick="document.getElementById('bg-music').play()">🎶 Hit play if you want to hear how dramatic I’m about this</button>
       <audio id="bg-music" loop>
-        <source src="song.mp3" type="audio/mpeg">
+        <source src="songs.mp3" type="audio/mpeg">
       </audio>
     </div>
 
@@ -322,13 +304,11 @@
     <img src="funny-finu.png" alt="Funny Finu">
   </div>
 
-  <!-- Fake Snap UI -->
   <div class="snap-ui" id="snapUI">
     <span>Finu... Snap me back!</span>
     <div class="snap-btn" onclick="snapMeBack()">👻 Snap me back</div>
   </div>
 
-  <!-- Snap Back Animation -->
   <div class="snap-back" id="snapBack">
     👻 Snap me back! 📨
   </div>
@@ -354,14 +334,14 @@
       slides[index].classList.add('active');
     }, 3500);
 
-    const emojis = ['🥺','💛','🔥','👻','📸'];
+    const emojis = ['🥺','💛','🔥','👻','📸','😂','🌚','💬'];
     const stars = document.getElementById('stars');
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 50; i++) {
       const span = document.createElement('span');
       span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
       span.style.left = Math.random() * 100 + 'vw';
-      span.style.top = '-10px';
       span.style.animationDelay = Math.random() * 6 + 's';
+      span.style.fontSize = `${Math.random() * 1.5 + 1}rem`;
       stars.appendChild(span);
     }
   </script>
